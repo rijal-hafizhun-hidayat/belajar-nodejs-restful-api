@@ -25,6 +25,11 @@ const register = async (request) => {
     }
 }
 
+const getUsers = async () => {
+    return await prismaClient.user.findMany()
+}
+
 export default {
+    getUsers,
     register
 }

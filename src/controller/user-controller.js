@@ -11,6 +11,18 @@ const register = async (request, response, next) => {
     }
 }
 
+const getUsers = async (request, response, next) => {
+    try {
+        const result = await userService.getUsers()
+        response.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default {
+    getUsers,
     register
 }
