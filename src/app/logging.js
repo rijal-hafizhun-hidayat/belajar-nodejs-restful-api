@@ -1,8 +1,8 @@
 import winston from "winston";
 
-export const logger = new winston.createLogger({
+export const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.json,
+    format: winston.format.json(),
     transports: [
         new winston.transports.Console({})
     ]
