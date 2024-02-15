@@ -29,7 +29,23 @@ const getUsers = async () => {
     return await prismaClient.user.findMany()
 }
 
+const getUserById = async (userId) => {
+    const getUserById = await prismaClient.user.findUnique({
+        where: {
+            id: parseInt(userId)
+        }
+    })
+
+    if(!!getUserById){
+        return getUserById
+    }
+    else{
+        throw new ResponseError(400, 'user not found')
+    }
+}
+
 export default {
+    getUserById,
     getUsers,
     register
 }
