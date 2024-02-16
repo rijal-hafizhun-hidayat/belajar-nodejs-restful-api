@@ -5,6 +5,12 @@ const registerUserValidation = Joi.object({
     password: Joi.string().required()
 })
 
+const loginUserValidation = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+})
+
 export {
-    registerUserValidation
+    registerUserValidation,
+    loginUserValidation
 }
