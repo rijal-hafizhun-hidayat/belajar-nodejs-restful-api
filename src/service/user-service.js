@@ -1,8 +1,9 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
-import { registerUserValidation } from "../validation/user-validation.js"
+import { loginUserValidation, registerUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
+import { v4 as uuid } from "uuid"
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request)
@@ -44,7 +45,61 @@ const getUserById = async (userId) => {
     }
 }
 
+const destroyUserById = async (userId) => {
+    const destroyUserById = await prismaClient.user.delete({
+        where: {
+            id: parseInt(userId)
+        }
+    })
+
+    if(!!destroyUserById){
+        
+    }
+    else{
+        throw new ResponseError(400, 'delete user failed')
+    }
+}
+
+const loginUser = async (request) => {
+    const userRequest = validate(loginUserValidation, request)
+    const login = await prismaClient.user.findUnique({
+        where: {
+            username: userRequest.username
+        },
+        select: {
+            username: true,
+            password: true
+        }
+    })
+
+    if(!login){
+        throw new ResponseError(400, 'username or password wrong')
+    }
+
+    const userPasswordIsValidate = bcrypt.compare(userRequest.password, login.password)
+
+    if(!userPasswordIsValidate){
+        throw new ResponseError(400, 'username or password wrong')
+    }
+
+    const token = uuid().toString()
+
+    return await prismaClient.user.update({
+        where: {
+            username: userRequest.username
+        },
+        data: {
+            token: token
+        },
+        select: {
+            token: true
+        }
+    })
+}
+
 export default {
+    loginUser,
+    destroyUserById,
     getUserById,
     getUsers,
     register
