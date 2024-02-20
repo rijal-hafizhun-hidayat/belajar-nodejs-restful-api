@@ -1,6 +1,6 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
-import { loginUserValidation, registerUserValidation } from "../validation/user-validation.js"
+import { authenticateUserValidation, loginUserValidation, registerUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from "uuid"
@@ -34,6 +34,9 @@ const getUserById = async (userId) => {
     const getUserById = await prismaClient.user.findUnique({
         where: {
             id: parseInt(userId)
+        },
+        select: {
+            username: true
         }
     })
 
@@ -98,9 +101,13 @@ const loginUser = async (request) => {
 }
 
 const getCurrentUser = async (token) => {
+    const userToken = validate(authenticateUserValidation, token)
     return await prismaClient.user.findFirst({
         where: {
-            token: token
+            token: userToken
+        },
+        select: {
+            username: true
         }
     })
 }

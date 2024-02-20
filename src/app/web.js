@@ -7,8 +7,8 @@ import { apiRoute } from "../route/api.js";
 const web = new express();
 web.use(express.json())
 web.use(morgan('combined'))
-web.use(apiRoute)
 web.use(publicRoute)
+web.use(apiRoute)
 web.use(errorMiddleware)
 
 // import express from "express";
