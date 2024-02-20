@@ -10,7 +10,12 @@ const loginUserValidation = Joi.object({
     password: Joi.string().required()
 })
 
+const authenticateUserValidation = Joi.object({
+    token: Joi.string().required()
+})
+
 export {
     registerUserValidation,
-    loginUserValidation
+    loginUserValidation,
+    authenticateUserValidation
 }
