@@ -97,10 +97,19 @@ const loginUser = async (request) => {
     })
 }
 
+const getCurrentUser = async (token) => {
+    return await prismaClient.user.findFirst({
+        where: {
+            token: token
+        }
+    })
+}
+
 export default {
     loginUser,
     destroyUserById,
     getUserById,
     getUsers,
-    register
+    register,
+    getCurrentUser
 }

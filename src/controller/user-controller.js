@@ -55,10 +55,22 @@ const loginUser = async (request, response, next) => {
     }
 }
 
+const getCurrentUser = async (request, respond, next) => {
+    try {
+        const result = await userService.getCurrentUser(request.token)
+        respond.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default {
     loginUser,
     destroyUserById,
     getUserById,
     getUsers,
-    register
+    register,
+    getCurrentUser
 }
