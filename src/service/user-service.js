@@ -1,6 +1,6 @@
 import { prismaClient } from "../app/database.js"
 import { ResponseError } from "../error/response-error.js"
-import { authenticateUserValidation, loginUserValidation, registerUserValidation } from "../validation/user-validation.js"
+import { authenticateUserValidation, loginUserValidation, registerUserValidation, updateUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from "uuid"
@@ -112,11 +112,38 @@ const getCurrentUser = async (token) => {
     })
 }
 
+const updateUserById = async (userId, request) => {
+    const requestValidation = validate(updateUserValidation, request)
+    const countUsernameIsExist = await prismaClient.user.count({
+        where: {
+            username: requestValidation.username
+        }
+    })
+
+    if(countUsernameIsExist >= 1){
+        throw new ResponseError(400, 'username already exists')
+    }
+
+    return await prismaClient.user.update({
+        where: {
+            id: parseInt(userId)
+        },
+        data: {
+            username: requestValidation.username,
+            password: bcrypt.hashSync(requestValidation.password, 10)
+        },
+        select: {
+            username: true
+        }
+    })
+}
+
 export default {
     loginUser,
     destroyUserById,
     getUserById,
     getUsers,
     register,
-    getCurrentUser
+    getCurrentUser,
+    updateUserById
 }

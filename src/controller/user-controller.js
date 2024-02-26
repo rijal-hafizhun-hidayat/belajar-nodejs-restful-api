@@ -66,11 +66,23 @@ const getCurrentUser = async (request, respond, next) => {
     }
 }
 
+const updateUserById = async (request, respond, next) => {
+    try {
+        const result = await userService.updateUserById(request.params.userId, request.body)
+        respond.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default {
     loginUser,
     destroyUserById,
     getUserById,
     getUsers,
     register,
-    getCurrentUser
+    getCurrentUser,
+    updateUserById
 }
