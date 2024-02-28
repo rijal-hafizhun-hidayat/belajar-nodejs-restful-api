@@ -77,6 +77,17 @@ const updateUserById = async (request, respond, next) => {
     }
 }
 
+const logout = async (request, respond, next) => {
+    try {
+        const result = await userService.logout(request.body)
+        respond.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default {
     loginUser,
     destroyUserById,
@@ -84,5 +95,6 @@ export default {
     getUsers,
     register,
     getCurrentUser,
-    updateUserById
+    updateUserById,
+    logout
 }

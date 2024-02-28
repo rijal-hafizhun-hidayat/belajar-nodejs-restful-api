@@ -16,9 +16,14 @@ const updateUserValidation = Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required()
 })
+
+const logoutUserValidation = Joi.object({
+    username: Joi.string().required()
+})
 export {
     registerUserValidation,
     loginUserValidation,
     authenticateUserValidation,
-    updateUserValidation
+    updateUserValidation,
+    logoutUserValidation
 }
