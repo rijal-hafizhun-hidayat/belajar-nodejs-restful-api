@@ -1,5 +1,5 @@
 import { prismaClient } from "../app/database.js"
-import { createContactValidation } from "../validation/contact-validation.js"
+import { createContactValidation, updateContactValidation } from "../validation/contact-validation.js"
 import { validate } from "../validation/validation.js"
 
 const getContact = async () => {
@@ -66,9 +66,34 @@ const getContactById = async (contactId) => {
     })
 }
 
+const updateContactById = async (contactId, request) => {
+    const requestValidation = validate(updateContactValidation, request)
+    
+    return await prismaClient.contact.update({
+        where: {
+            id: parseInt(contactId)
+        },
+        data: {
+            firstname: requestValidation.firstname,
+            lastname: requestValidation.lastname,
+            email: requestValidation.email,
+            phone: String(requestValidation.phone)
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    username: true
+                }
+            }
+        }
+    })
+}
+
 export default{
     getContact,
     createContact,
     deleteContactById,
-    getContactById
+    getContactById,
+    updateContactById
 }

@@ -44,9 +44,21 @@ const getContactById = async (req, res, next) => {
     }
 }
 
+const updateContactById = async (req, res, next) => {
+    try {
+        const result = await contactService.updateContactById(req.params.contactId, req.body)
+        res.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default{
     getContact,
     createContact,
     deleteContactById,
-    getContactById
+    getContactById,
+    updateContactById
 }
