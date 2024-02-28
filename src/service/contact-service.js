@@ -3,7 +3,16 @@ import { createContactValidation } from "../validation/contact-validation.js"
 import { validate } from "../validation/validation.js"
 
 const getContact = async () => {
-    return await prismaClient.contact.findMany()
+    return await prismaClient.contact.findMany({
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    username: true
+                }
+            }
+        }
+    })
 }
 
 const createContact = async (user, request) => {
@@ -17,16 +26,27 @@ const createContact = async (user, request) => {
             username: user.username,
             user_id: user.id
         },
-        select: {
-            firstname: true,
-            lastname: true,
-            email: true,
-            phone: true
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    username: true
+                }
+            }
+        }
+    })
+}
+
+const deleteContactById = async (contactId) => {
+    return await prismaClient.contact.delete({
+        where: {
+            id: parseInt(contactId)
         }
     })
 }
 
 export default{
     getContact,
-    createContact
+    createContact,
+    deleteContactById
 }

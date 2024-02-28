@@ -22,7 +22,19 @@ const createContact = async (request, respond, next) => {
     }
 }
 
+const deleteContactById = async (req, res, next) => {
+    try {
+        const result = await contactService.deleteContactById(req.params.contactId)
+        res.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default{
     getContact,
-    createContact
+    createContact,
+    deleteContactById
 }
