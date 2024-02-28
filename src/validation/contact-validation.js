@@ -7,6 +7,14 @@ const createContactValidation = Joi.object({
     phone: Joi.number().integer().required(),
 })
 
+const updateContactValidation = Joi.object({
+    firstname: Joi.string().required(),
+    lastname: Joi.string().required(),
+    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    phone: Joi.number().integer().required(),
+})
+
 export {
-    createContactValidation
+    createContactValidation,
+    updateContactValidation
 }

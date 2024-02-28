@@ -19,6 +19,7 @@ apiRoute.get('/api/contact', contactController.getContact)
 apiRoute.post('/api/contact', contactController.createContact)
 apiRoute.delete('/api/contact/:contactId', contactController.deleteContactById)
 apiRoute.get('/api/contact/:contactId', contactController.getContactById)
+apiRoute.put('/api/contact/:contactId', contactController.updateContactById)
 
 export {
     apiRoute
