@@ -45,8 +45,30 @@ const deleteContactById = async (contactId) => {
     })
 }
 
+const getContactById = async (contactId) => {
+    return await prismaClient.contact.findUnique({
+        where: {
+            id: parseInt(contactId)
+        },
+        select: {
+            firstname: true,
+            lastname: true,
+            email: true,
+            phone: true,
+            username: true,
+            user: {
+                select: {
+                    id: true,
+                    username: true
+                }
+            }
+        },
+    })
+}
+
 export default{
     getContact,
     createContact,
-    deleteContactById
+    deleteContactById,
+    getContactById
 }

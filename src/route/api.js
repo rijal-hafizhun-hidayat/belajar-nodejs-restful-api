@@ -18,6 +18,7 @@ apiRoute.put('/api/user/:userId', userController.updateUserById)
 apiRoute.get('/api/contact', contactController.getContact)
 apiRoute.post('/api/contact', contactController.createContact)
 apiRoute.delete('/api/contact/:contactId', contactController.deleteContactById)
+apiRoute.get('/api/contact/:contactId', contactController.getContactById)
 
 export {
     apiRoute
