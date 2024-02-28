@@ -20,7 +20,7 @@ const authMiddleware = async (request, response, next) => {
             }).end()
         }
         else{
-            request.token = token
+            request.user = user
             return next()
         }
     }

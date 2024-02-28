@@ -100,8 +100,8 @@ const loginUser = async (request) => {
     })
 }
 
-const getCurrentUser = async (token) => {
-    const userToken = validate(authenticateUserValidation, token)
+const getCurrentUser = async (user) => {
+    const userToken = validate(authenticateUserValidation, user.token)
     return await prismaClient.user.findFirst({
         where: {
             token: userToken
