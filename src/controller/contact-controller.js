@@ -33,8 +33,20 @@ const deleteContactById = async (req, res, next) => {
     }
 }
 
+const getContactById = async (req, res, next) => {
+    try {
+        const result = await contactService.getContactById(req.params.contactId)
+        res.status(200).json({
+            data: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 export default{
     getContact,
     createContact,
-    deleteContactById
+    deleteContactById,
+    getContactById
 }
