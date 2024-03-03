@@ -10,11 +10,11 @@ const authMiddleware = async (request, response, next) => {
         }).end()
     }
 
-    Jwt.verify(token, 'swefijlzc22@#()33vsd', async function(err, decoded) {
+    Jwt.verify(token, process.env.JWT_SECRET_KEY, async function(err, decoded) {
         if(err){
             return response.status(401).json({
                 errorToken: err.name,
-                errorMessage: err.message
+                errorMessage: err.message,
             }).end()
         }
         else{
