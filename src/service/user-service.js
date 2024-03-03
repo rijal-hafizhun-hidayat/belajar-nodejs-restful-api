@@ -4,6 +4,7 @@ import { authenticateUserValidation, loginUserValidation, logoutUserValidation, 
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
 import { v4 as uuid } from "uuid"
+import Jwt from "jsonwebtoken"
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request)
@@ -85,7 +86,9 @@ const loginUser = async (request) => {
         throw new ResponseError(400, 'username or password wrong')
     }
 
-    const token = uuid().toString()
+    const token = Jwt.sign({
+        id: login.id
+    }, 'swefijlzc22@#()33vsd', { expiresIn: 60 * 60 });
 
     return await prismaClient.user.update({
         where: {
